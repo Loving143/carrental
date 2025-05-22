@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
@@ -20,6 +21,7 @@ import jakarta.persistence.Table;
 @Table(name="Customer")
 public class CustomUser {
 
+	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="cust_seq")
 	@SequenceGenerator(name ="cust_seq",sequenceName ="Customer_Sequence",allocationSize=1)
 	private Integer id;
