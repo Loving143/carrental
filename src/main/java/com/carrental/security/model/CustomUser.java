@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.carrental.enumm.Gender;
+import com.carrental.security.dto.RegisterCustomerRequest;
 import com.carrental.util.Address;
 
 import jakarta.persistence.CascadeType;
@@ -38,6 +39,9 @@ public class CustomUser {
 	private List<Role>roles;
 	private boolean verified;
 	private boolean active;
+	public CustomUser(RegisterCustomerRequest request) {
+		// TODO Auto-generated constructor stub
+	}
 	public String getFullName() {
 		return fullName;
 	}

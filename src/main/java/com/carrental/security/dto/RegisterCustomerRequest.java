@@ -22,12 +22,7 @@ public class RegisterCustomerRequest {
 	private String phoneNumber;
 	private String drivingLicenseNumber;
 	private LocalDate dateOfBirth;
-	@Enumerated(EnumType.STRING)
-	private Gender gender;
-	@OneToOne
-	private Address address;
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
-	private List<Role>roles;
-	private boolean verified;
-	private boolean active;
+	private String gender;
+	private AddAddressRequest address;
+	private List<AddRoleRequest>roles;
 }
