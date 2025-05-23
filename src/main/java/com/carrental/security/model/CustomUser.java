@@ -40,7 +40,15 @@ public class CustomUser {
 	private boolean verified;
 	private boolean active;
 	public CustomUser(RegisterCustomerRequest request) {
-		// TODO Auto-generated constructor stub
+		this.fullName = request.getFullName();
+		this.email = request.getEmail();
+		this.gender = request.getGender();
+		this.phoneNumber = request.getPhoneNumber();
+		this.drivingLicenseNumber = request.getDrivingLicenseNumber();
+		this.dateOfBirth = request.getDateOfBirth();
+		Address address = new Address(request.getAddress());
+		this.address = address;
+		this.active = true;
 	}
 	public String getFullName() {
 		return fullName;

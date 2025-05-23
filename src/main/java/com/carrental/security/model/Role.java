@@ -1,5 +1,7 @@
 package com.carrental.security.model;
 
+import com.carrental.security.dto.AddRoleRequest;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,11 +13,13 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	
-	
 	private String roleName;
 	private String roleCode;
 	
+	public Role(AddRoleRequest roleReq) {
+		this.roleCode = roleReq.getRoleCode();
+		this.roleName = roleReq.getRoleName();
+	}
 	public String getRoleName() {
 		return roleName;
 	}
