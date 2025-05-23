@@ -8,6 +8,6 @@ import com.carrental.security.model.CustomUser;
 
 public interface CustomerRepository  extends JpaRepository<CustomUser, Integer>{
 
-	Optional<CustomUser> findByUsername(String username);
+	Optional<CustomUser> findByEmail(String email);
 
 }

@@ -6,19 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 import com.carrental.security.repository.CustomerRepository;
 
+@Component
 public class CustomUserDetailsService implements UserDetailsService{
 
 	@Autowired
 	private CustomerRepository customerRepo;
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { // your repository
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException { // your repository
 		
-	        Optional<CustomUser> user = customerRepo.findByUsername(username);
+	        Optional<CustomUser> user = customerRepo.findByEmail(email);
 	        if (user == null) {
-	            throw new UsernameNotFoundException("User not found with username: " + username);
+	            throw new UsernameNotFoundException("User not found with username: " + email);
 	        }
 	        return new CustomUserDetails(user.get());
 	    

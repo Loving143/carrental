@@ -1,22 +1,24 @@
 package com.carrental.security.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 
 import com.carrental.security.service.OtpService;
-
+@Component
 public class OtpAuthenticationProvider implements AuthenticationProvider{
 
-	 private final UserDetailsService userDetailsService;
-	    private final OtpService otpService; // Your custom service to validate OTP
+	 private final CustomUserDetailsService userDetailsService;
+	 
+	 	@Autowired
+	    private  OtpService otpService; // Your custom service to validate OTP
 
-	    public OtpAuthenticationProvider(UserDetailsService userDetailsService, OtpService otpService) {
+	    public OtpAuthenticationProvider(CustomUserDetailsService userDetailsService) {
 	        this.userDetailsService = userDetailsService;
-	        this.otpService = otpService;
 	    }
 
 	    @Override
