@@ -2,6 +2,8 @@ package com.carrental.security.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +15,8 @@ public class CustomUserDetails implements UserDetails{
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		ArrayList<CustomGrantedAuthority>authorities = new ArrayList();
-		CustomGrantedAuthority auth = new CustomGrantedAuthority("Read");
-		authorities.add(auth);
+		List<CustomGrantedAuthority>authorities = user.getRoles().stream()
+				.map(r->new CustomGrantedAuthority(r.getRoleName())).collect(Collectors.toList());
 		return authorities;
 	}
 

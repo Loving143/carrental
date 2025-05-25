@@ -35,7 +35,7 @@ public class CustomUser {
 	private Gender gender;
 	@OneToOne(cascade=CascadeType.ALL)
 	private Address address;
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<Role>roles;
 	private boolean verified;
 	private boolean active;

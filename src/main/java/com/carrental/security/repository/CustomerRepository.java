@@ -10,4 +10,6 @@ public interface CustomerRepository  extends JpaRepository<CustomUser, Integer>{
 
 	Optional<CustomUser> findByEmail(String email);
 
+	boolean existsByEmail(String email);
+
 }

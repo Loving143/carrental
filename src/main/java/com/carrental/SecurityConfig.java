@@ -6,23 +6,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.carrental.security.model.CustomAuthenticationProvider;
+import com.carrental.security.model.JwtAuthenticationFilter;
 import com.carrental.security.model.OtpAuthenticationProvider;
 import com.carrental.security.model.OtpFilter;
 import com.carrental.security.model.UserNamePassWordFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserNamePassWordFilter firstFactorAuthFilter;
     private final OtpFilter secondFactorAuthFilter;
     private final CustomAuthenticationProvider usernamePasswordAuthProvider;
@@ -31,11 +33,13 @@ public class SecurityConfig {
     SecurityConfig(UserNamePassWordFilter firstFactorAuthFilter,
     		OtpFilter secondFactorAuthFilter,
     		CustomAuthenticationProvider usernamePasswordAuthProvider,
-    		OtpAuthenticationProvider mfaAuthProvider){
+    		OtpAuthenticationProvider mfaAuthProvider,
+    		JwtAuthenticationFilter jwtAuthenticationFilter){
     	this.firstFactorAuthFilter =firstFactorAuthFilter;
     	this.secondFactorAuthFilter = secondFactorAuthFilter;
     	this.usernamePasswordAuthProvider = usernamePasswordAuthProvider;
     	this.mfaAuthProvider = mfaAuthProvider;
+    	this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
@@ -48,6 +52,7 @@ public class SecurityConfig {
             .requestMatchers("/auth/**").permitAll()
             .anyRequest().authenticated();
 
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(firstFactorAuthFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterAfter(secondFactorAuthFilter, UserNamePassWordFilter.class);
 

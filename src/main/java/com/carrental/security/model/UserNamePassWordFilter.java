@@ -3,6 +3,7 @@ package com.carrental.security.model;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +14,9 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
+import com.carrental.exception.BadRequestException;
 import com.carrental.security.dto.LoginRequest;
+import com.carrental.security.repository.CustomerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,8 +24,10 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class UserNamePassWordFilter extends AbstractAuthenticationProcessingFilter{
 
-	
+	@Autowired
+	private CustomerRepository customerRepo;
 	private final JwtUtil jwtUtil;
+	
 	
     public UserNamePassWordFilter(@Lazy AuthenticationManager authenticationManager,JwtUtil jwtUtil) {
         super(new AntPathRequestMatcher("/auth/login", "POST"));
@@ -68,7 +73,7 @@ public class UserNamePassWordFilter extends AbstractAuthenticationProcessingFilt
 
         // Generate JWT
         String username = authResult.getName();
-        String token = jwtUtil.generateToken(username);
+        String token = jwtUtil.generateToken(username,authResult.getAuthorities());
 
         // Send token to the client (could also use headers)
         response.setContentType("application/json");
