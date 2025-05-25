@@ -10,21 +10,15 @@ import com.carrental.security.dto.RegisterCustomerRequest;
 import com.carrental.security.service.CustomerService;
 
 @RestController
-@RequestMapping("/carrental")
+@RequestMapping("/auth")
 public class AuthController {
 
 	@Autowired
 	private CustomerService custService;
 	
-	@PostMapping("/login")
-	public String login() {
-		
-		return"";
-	}
-	
 	@PostMapping("/register")
 	public String RegisterUser(@RequestBody RegisterCustomerRequest request) {
 		custService.registerCustomer(request);
-		return"";
+		return"User registered Successfully";
 	}
 }

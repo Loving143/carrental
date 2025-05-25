@@ -25,16 +25,14 @@ public class OtpFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException, IOException {
-
-        // Extract OTP and username (or user ID) from request parameters
+    	
         String otp = request.getParameter("otp");
         String username = request.getParameter("username"); // or from session/context
 
         if (otp == null || username == null) {
             throw new IllegalArgumentException("OTP and username must be provided");
         }
-
-        // Create a custom OTP Authentication token (you need to implement this)
+        
         OtpAuthenticationToken otpAuthToken = new OtpAuthenticationToken(username, otp);
 
         // Delegate to AuthenticationManager for authentication

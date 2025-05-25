@@ -13,24 +13,34 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
+import com.carrental.security.dto.LoginRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class UserNamePassWordFilter extends AbstractAuthenticationProcessingFilter{
 
-    // Constructor: define the URL pattern to filter (e.g., /login)
-    public UserNamePassWordFilter(@Lazy AuthenticationManager authenticationManager) {
-        super(new AntPathRequestMatcher("/login", "POST"));
+	
+	private final JwtUtil jwtUtil;
+	
+    public UserNamePassWordFilter(@Lazy AuthenticationManager authenticationManager,JwtUtil jwtUtil) {
+        super(new AntPathRequestMatcher("/auth/login", "POST"));
         setAuthenticationManager(authenticationManager);
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException, IOException {
 
-        // Extract username and password from the request parameters
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+    	 // Use ObjectMapper from Jackson to read JSON body
+        ObjectMapper mapper = new ObjectMapper();
+
+        LoginRequest loginRequest = mapper.readValue(request.getInputStream(), LoginRequest.class);
+
+        String username = loginRequest.getUsername();
+        String password = loginRequest.getPassword();
 
         if (username == null) {
             username = "";
@@ -54,15 +64,15 @@ public class UserNamePassWordFilter extends AbstractAuthenticationProcessingFilt
                                             jakarta.servlet.FilterChain chain,
                                             Authentication authResult) throws IOException {
 
-        // Set the authenticated user in the SecurityContext
-        SecurityContextHolder.getContext().setAuthentication(authResult);
+    	SecurityContextHolder.getContext().setAuthentication(authResult);
 
-        // Continue the filter chain
-        try {
-            chain.doFilter(request, response);
-        } catch (Exception e) {
-            throw new IOException(e);
-        }
+        // Generate JWT
+        String username = authResult.getName();
+        String token = jwtUtil.generateToken(username);
+
+        // Send token to the client (could also use headers)
+        response.setContentType("application/json");
+        response.getWriter().write("{\"token\": \"" + token + "\"}");
     }
 
     @Override
