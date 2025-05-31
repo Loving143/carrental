@@ -5,8 +5,8 @@ WORKDIR /app
 # Copy the project files to the build container
 COPY . .
 
-# Build the Spring Boot application using Maven Wrapper
-RUN ./mvnw clean package -DskipTests
+# Give execute permission to mvnw and then build the Spring Boot application using Maven Wrapper
+RUN chmod +x ./mvnw && ./mvnw clean package -DskipTests
 
 # ---- Run stage ----
 FROM eclipse-temurin:17-jdk
