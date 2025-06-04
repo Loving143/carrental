@@ -1,8 +1,13 @@
 package com.carrental.vehicle.serviceImpl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.carrental.enumm.FuelType;
+import com.carrental.enumm.TransmissionType;
 import com.carrental.reservation.model.Reservation;
 import com.carrental.reservation.repository.ReservationRepository;
 import com.carrental.storage.model.Storage;
@@ -10,6 +15,7 @@ import com.carrental.storage.repository.StorageRepository;
 import com.carrental.vehicle.dto.AddVehicleRequest;
 import com.carrental.vehicle.model.Vehicle;
 import com.carrental.vehicle.repository.VehicleRepository;
+import com.carrental.vehicle.response.VehicleResponse;
 import com.carrental.vehicle.service.VehicleService;
 
 @Service
@@ -86,4 +92,66 @@ public class VehicleServiceImpl implements VehicleService{
 
 	         return vehicle;
 	     }
+
+		@Override
+		public List<VehicleResponse> fetchVehicleByModel(String model) {
+			return vehicleRepository.fetchVehiclesByModel(model).
+					stream().map(VehicleResponse::new).collect(Collectors.toList());
+			
+		}
+
+		@Override
+		public List<VehicleResponse> fetchVehicleByPrice(String price) {
+			return vehicleRepository.fetchVehiclesByPrice(price).
+					stream().map(VehicleResponse::new).collect(Collectors.toList());
+		}
+
+		@Override
+		public List<VehicleResponse> fetchVehicleByColor(String color) {
+			return vehicleRepository.fetchVehiclesByColor(color).
+					stream().map(VehicleResponse::new).collect(Collectors.toList());
+		}
+
+		@Override
+		public List<VehicleResponse> fetchVehicleByBrand(String brand) {
+			return vehicleRepository.fetchVehiclesByBrand(brand).
+					stream().map(VehicleResponse::new).collect(Collectors.toList());
+		}
+
+		@Override
+		public List<VehicleResponse> fetchVehicleByFuelType(String fuelType) {
+			if(fuelType.equals("DIESEL")) {
+			return vehicleRepository.fetchVehicleByFuelType(FuelType.DIESEL).
+					stream().map(VehicleResponse::new).collect(Collectors.toList());
+			}else if(fuelType.equals("PETROL")) {
+				return vehicleRepository.fetchVehicleByFuelType(FuelType.PETROL).
+						stream().map(VehicleResponse::new).collect(Collectors.toList());
+			}else if(fuelType.equals("ELECTRIC")) {
+				return vehicleRepository.fetchVehicleByFuelType(FuelType.ELECTRIC).
+						stream().map(VehicleResponse::new).collect(Collectors.toList());
+			}else if(fuelType.equals("HYBRID")) {
+				return vehicleRepository.fetchVehicleByFuelType(FuelType.HYBRID).
+						stream().map(VehicleResponse::new).collect(Collectors.toList());
+			}
+			return null;
+			
+		}
+
+		@Override
+		public List<VehicleResponse> fetchVehicleByTransmissionType(String transmissionType) {
+			if(transmissionType.equals("MANUAL")) {
+			return vehicleRepository.fetchVehicleByTransmissionType(TransmissionType.MANUAL).
+					stream().map(VehicleResponse::new).collect(Collectors.toList());
+			}else if(transmissionType.equals("AUTOMATIC")) {
+				return vehicleRepository.fetchVehicleByTransmissionType(TransmissionType.AUTOMATIC).
+						stream().map(VehicleResponse::new).collect(Collectors.toList());	
+			}
+			return null;
+		}
+
+		@Override
+		public List<VehicleResponse> compareCars(List<Integer> carIds) {
+			return vehicleRepository.compareVehicles(carIds).
+			stream().map(VehicleResponse::new).collect(Collectors.toList());
+		}
 }

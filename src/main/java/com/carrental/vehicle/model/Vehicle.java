@@ -63,6 +63,7 @@ public class Vehicle {
     private LocalDate insuranceExpiryDate;            // City or branch
     private String description;
     private boolean active;
+    private String brand;
 
 
 	public Integer getId() {
@@ -287,5 +288,13 @@ public class Vehicle {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
 	}
 }
