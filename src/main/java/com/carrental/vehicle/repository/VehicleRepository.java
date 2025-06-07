@@ -106,7 +106,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Integer>{
 			+ " v.hourlyRentalPrice as hourlyRentalPrice,"
 			+ " v.vehicleType as vehicleType,"
 			+ " v.gpsEnabled as gpsEnabled,"
-			+ " v.airConditioned as airConditioned"
+			+ " v.airConditioned as airConditioned "
 			+ " from Vehicle as v "
 			+ " where v.fuelType = :fuelType "
 			+ " AND v.active = true ")
