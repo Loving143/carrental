@@ -34,6 +34,12 @@ public class Payment {
 	    private String transactionId; // From payment gateway
 
 	    private String gatewayResponse; // Optional (e.g., Razorpay/Stripe JSON)
+	    
+	    private Integer rent;
+	    
+	    private Integer tax;
+	    
+	    private Integer discount;
 
 	    @ManyToOne
 	    @JoinColumn(name = "reservation_id")
@@ -101,6 +107,30 @@ public class Payment {
 
 		public void setReservation(Reservation reservation) {
 			this.reservation = reservation;
+		}
+
+		public Integer getRent() {
+			return rent;
+		}
+
+		public void setRent(Integer rent) {
+			this.rent = rent;
+		}
+
+		public Integer getTax() {
+			return tax;
+		}
+
+		public void setTax(Integer tax) {
+			this.tax = tax;
+		}
+
+		public Integer getDiscount() {
+			return discount;
+		}
+
+		public void setDiscount(Integer discount) {
+			this.discount = discount;
 		}
 	    
 }

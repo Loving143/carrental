@@ -2,11 +2,13 @@ package com.carrental.reservation.serviceImpl;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.carrental.exception.BadRequestException;
 import com.carrental.reservation.dto.ReservationRequest;
 import com.carrental.reservation.model.Reservation;
 import com.carrental.reservation.repository.ReservationRepository;
+import com.carrental.reservation.response.BookingPreviewResponse;
 import com.carrental.reservation.service.ReservationService;
 import com.carrental.security.model.CustomUser;
 import com.carrental.security.repository.CustomerRepository;
@@ -14,6 +16,7 @@ import com.carrental.util.Address;
 import com.carrental.vehicle.model.Vehicle;
 import com.carrental.vehicle.repository.VehicleRepository;
 
+@Service
 public class ReservationServiceImpl implements ReservationService{
 
 	@Autowired
@@ -37,6 +40,13 @@ public class ReservationServiceImpl implements ReservationService{
 		reservation.setCar(vehicle);
 		reservation.setUser(customer);
 		reservationRepo.save(reservation);
+	}
+
+	@Override
+	public BookingPreviewResponse fetchBookingPreview(Integer reservationId) {
+		Reservation reservation = reservationRepo.findById(reservationId).orElseThrow(()-> new BadRequestException("Reservation with id "+reservationId+" does not exists!"));
+		BookingPreviewResponse response = new BookingPreviewResponse(reservation);
+		return response;
 	}
 
 }

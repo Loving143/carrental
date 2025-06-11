@@ -38,6 +38,7 @@ public class Vehicle {
     private String model;                  // Model (e.g., Corolla)
     private String variant;                // Trim or version
     private int manufacturingYear;                      // Manufacturing year
+    private String vehicleName;
     private String color;
      @Enumerated(EnumType.STRING)
     private FuelType fuelType; 
@@ -296,5 +297,13 @@ public class Vehicle {
 
 	public void setBrand(String brand) {
 		this.brand = brand;
+	}
+
+	public String getVehicleName() {
+		return vehicleName;
+	}
+
+	public void setVehicleName(String vehicleName) {
+		this.vehicleName = vehicleName;
 	}
 }
